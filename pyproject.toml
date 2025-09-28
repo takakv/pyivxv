@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyivxv"
+version = "0.0.1.dev1"
+authors = [{ name = "takakv" }]
+license = { text = "MIT" }
+dependencies = [
+    "fastecdsa",
+    "pyasn1",
+    "pyasn1-modules",
+]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
