@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyivxv"
-version = "0.0.1.a1"
+version = "0.0.1.a2"
 authors = [{ name = "takakv" }]
 description = "Cryptographic recipes and primitives used in IVXV."
 readme = "README.md"
@@ -23,6 +23,11 @@ dependencies = [
     "pyasn1>=0.6.1",
     "pyasn1-modules>=0.4.2",
 ]
+
+[project.urls]
+homepage = "https://github.com/takakv/pyivxv"
+source = "https://github.com/takakv/pyivxv/"
+issues = "https://github.com/takakv/pyivxv/issues"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
