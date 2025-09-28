@@ -10,10 +10,16 @@ class ElGamalCiphertext:
     U: Point
     V: Point
 
-    def __init__(self, U: Point, V: Point):
-        if not (U is None and V is None):
-            self.U = U
-            self.V = V
+    def __init__(self, U: Point, V: Point, r: int | None = None):
+        self.U = U
+        self.V = V
+        self.r = r
+
+    def unblind(self, H: Point) -> Point:
+        if self.r is None:
+            raise ValueError("Ciphertext ephemeral random not known")
+        blind = H * self.r
+        return self.V - blind
 
     def to_asn1(self) -> ElGamalCiphertextInfo:
         eem = ECCElGamalCiphertext()

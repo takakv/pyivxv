@@ -49,17 +49,14 @@ class PublicKey:
         pem_bytes = "\n".join(pem_lines).encode("ascii")
         return pem_bytes
 
-    def encrypt(self, M: Point) -> ElGamalCiphertext:
+    def encrypt(self, M: Point, store_ephemeral=False) -> ElGamalCiphertext:
         r = secrets.randbelow(self.curve.q)
-        return ElGamalCiphertext(self.curve.G * r, M + (self.H * r))
+        return ElGamalCiphertext(self.curve.G * r, M + (self.H * r),
+                                 r if store_ephemeral else None)
 
     def encode_and_encrypt(self, m: str) -> ElGamalCiphertext:
         encoded = encode_to_point(m.encode(), self.curve)
         return self.encrypt(encoded)
-
-    def unblind(self, ct: ElGamalCiphertext, r: int) -> Point:
-        mask = self.H * r
-        return ct.V - mask
 
     def _to_asn1(self) -> rfc5280.SubjectPublicKeyInfo:
         params = ECCElGamalParameters()
