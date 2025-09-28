@@ -13,12 +13,18 @@ class ElGamalCiphertext:
     def __init__(self, U: Point, V: Point, r: int | None = None):
         self.U = U
         self.V = V
-        self.r = r
+        self._r = r
+
+    @property
+    def ephemeral_random(self) -> int:
+        if self._r is None:
+            raise AttributeError("Ciphertext ephemeral random not known")
+        return self._r
 
     def unblind(self, H: Point) -> Point:
-        if self.r is None:
+        if self._r is None:
             raise ValueError("Ciphertext ephemeral random not known")
-        blind = H * self.r
+        blind = H * self._r
         return self.V - blind
 
     def to_asn1(self) -> ElGamalCiphertextInfo:

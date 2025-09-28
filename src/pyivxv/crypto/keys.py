@@ -54,9 +54,9 @@ class PublicKey:
         return ElGamalCiphertext(self.curve.G * r, M + (self.H * r),
                                  r if store_ephemeral else None)
 
-    def encode_and_encrypt(self, m: str) -> ElGamalCiphertext:
+    def encode_and_encrypt(self, m: str, store_ephemeral=False) -> ElGamalCiphertext:
         encoded = encode_to_point(m.encode(), self.curve)
-        return self.encrypt(encoded)
+        return self.encrypt(encoded, store_ephemeral)
 
     def _to_asn1(self) -> rfc5280.SubjectPublicKeyInfo:
         params = ECCElGamalParameters()
