@@ -21,10 +21,20 @@ class ElGamalCiphertext:
             raise AttributeError("Ciphertext ephemeral random not known")
         return self._r
 
-    def unblind(self, H: Point) -> Point:
-        if self._r is None:
+    @ephemeral_random.setter
+    def ephemeral_random(self, r: int) -> None:
+        self._r = r
+
+    def unblind(self, H: Point, *, r: int | None = None) -> Point:
+        if self._r is None and r is None:
             raise ValueError("Ciphertext ephemeral random not known")
-        blind = H * self._r
+        elif r is None and self._r is not None:
+            # Explicitly provided random overrides the internal random of the class.
+            # Up for debate: is that a sensible choice? Should it throw on conflict?
+            # Allowing to provide r seems sensible in case r should be short-lived, but the class is long-lived.
+            r = self._r
+
+        blind = H * r
         return self.V - blind
 
     def to_asn1(self) -> ElGamalCiphertextInfo:

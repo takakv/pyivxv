@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyivxv"
-version = "0.0.1.a2"
+version = "0.0.1.a3"
 authors = [{ name = "takakv" }]
 description = "Cryptographic recipes and primitives used in IVXV."
 readme = "README.md"
