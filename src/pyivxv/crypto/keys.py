@@ -19,9 +19,11 @@ from pyivxv.encoding.pem import pem_to_der
 
 
 class PublicKey:
-    def __init__(self, H: Point, election_id: str, spki: rfc5280.SubjectPublicKeyInfo | None = None):
+    def __init__(self, H: Point, election_id: str, spki: rfc5280.SubjectPublicKeyInfo | None = None,
+                 lifted: bool = True):
         self.H = H
         self.election_id = election_id
+        self.lifted = lifted
 
         if spki is None:
             spki = self._to_asn1()
@@ -62,6 +64,7 @@ class PublicKey:
         params = ECCElGamalParameters()
         params["curve"] = "P-384"
         params["electionId"] = self.election_id
+        params["lifted"] = self.lifted
 
         spki = rfc5280.SubjectPublicKeyInfo()
         spki["algorithm"]["algorithm"] = id_ivxv_ecc_elgamal
