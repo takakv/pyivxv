@@ -56,6 +56,10 @@ class PublicKey:
         return ElGamalCiphertext(self.curve.G * r, M + (self.H * r),
                                  r if store_ephemeral else None)
 
+    def lifted_encrypt(self, m: int, store_ephemeral=False) -> ElGamalCiphertext:
+        lifted_message = self.curve.G * m
+        return self.encrypt(lifted_message, store_ephemeral)
+
     def encode_and_encrypt(self, m: str, store_ephemeral=False) -> ElGamalCiphertext:
         encoded = encode_to_point(m.encode(), self.curve)
         return self.encrypt(encoded, store_ephemeral)
