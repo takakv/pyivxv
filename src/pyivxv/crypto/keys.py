@@ -35,7 +35,8 @@ class PublicKey:
         spki, _ = der_decoder.decode(pem_to_der(data), asn1Spec=rfc5280.SubjectPublicKeyInfo())
         pkey, _ = der_decoder.decode(spki["subjectPublicKey"].asOctets(), asn1Spec=ECCElGamalPublicKey())
         params, _ = der_decoder.decode(spki["algorithm"]["parameters"].asOctets(), asn1Spec=ECCElGamalParameters())
-        return cls(point_from_bytes(pkey["pubY"]), params["electionId"], spki)
+        lifted = bool(params["lifted"]) if params["lifted"].hasValue() else False
+        return cls(point_from_bytes(pkey["pubY"]), params["electionId"], spki, lifted)
 
     def public_bytes(self, encoding: Literal["DER", "PEM"] = "DER") -> bytes:
         if encoding != "DER" and encoding != "PEM":

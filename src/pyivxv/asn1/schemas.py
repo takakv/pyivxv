@@ -1,5 +1,5 @@
 from pyasn1.type.char import GeneralString
-from pyasn1.type.namedtype import NamedTypes, NamedType
+from pyasn1.type.namedtype import NamedTypes, NamedType, OptionalNamedType
 from pyasn1.type.univ import ObjectIdentifier, Sequence, OctetString, Integer, Boolean
 from pyasn1_modules import rfc5280
 
@@ -10,7 +10,8 @@ class ECCElGamalParameters(Sequence):
     componentType = NamedTypes(
         NamedType("curve", GeneralString()),
         NamedType("electionId", GeneralString()),
-        NamedType("lifted", Boolean()),
+        # Legacy (non-lifted) ECC ElGamal keys did not have the lifted field, but used the same OID.
+        OptionalNamedType("lifted", Boolean()),
     )
 
 
